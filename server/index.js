@@ -12,9 +12,9 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-  pgadmin.getEmployees()
+  pgadmin.sendQuery(`select * from del_2."Customer" `)
     .then(response => {
-      res.status(200).send(response.map(i => i.tablename));
+      res.status(200).send(response);
     })
     .catch(error => {
       res.status(500).send(error);
@@ -22,20 +22,69 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  console.log(req.body.query)
   pgadmin.sendQuery(req.body.query)
     .then(response => {
-      res.status(200).send(response.map(i => i.tablename));
+      res.status(200).send(response);
     })
     .catch(error => {
       res.status(500).send(error);
     })
 })
 
-app.get('/rooms', (req, res) => {
+app.get('/book', (req, res) => {
+  pgadmin.getBookings()
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.get('/employee', (req, res) => {
+  pgadmin.getEmployees()
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.get('/parenthotel', (req, res) => {
+  pgadmin.getParentHotel()
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.get('/hotel', (req, res) => {
+  pgadmin.getHotel()
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.get('/room', (req, res) => {
   pgadmin.getRooms()
     .then(response => {
-      res.status(200).send(response.map(i => i.tablename));
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.get('/customer', (req, res) => {
+  pgadmin.getCustomers()
+    .then(response => {
+      res.status(200).send(response);
     })
     .catch(error => {
       res.status(500).send(error);

@@ -1,32 +1,35 @@
 const Pool = require('pg').Pool
+require('dotenv').config()
 const pool = new Pool({
-  user: 'amanz091',
-  host: 'web0.eecs.uottawa.ca',
-  database: 'group_b01_g54',
-  password: 'Compaqs710',
-  port: 15432,
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT,
 });
 
+const getBookings = () => {
+  return sendQuery('SELECT * FROM del_2."Book"')
+}
+
 const getEmployees = () => {
-  return new Promise(function (resolve, reject) {
-    pool.query("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';", (error, results) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(results.rows);
-    })
-  })
+  return sendQuery('SELECT * FROM del_2."Employee"')
+}
+
+const getParentHotel = () => {
+  return sendQuery('SELECT * FROM del_2."Par_Hotel"')
 }
 
 const getRooms = () => {
-  return new Promise(function (resolve, reject) {
-    pool.query("SELECT * FROM rooms", (error, results) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(results.rows);
-    })
-  })
+  return sendQuery('SELECT * FROM del_2."Room"')
+}
+
+const getCustomers = () => {
+  return sendQuery(`SELECT * FROM del_2."Customer"`)
+}
+
+const getHotel = () => {
+  return sendQuery(`SELECT * FROM del_2."Hotel"`)
 }
 
 const sendQuery = (query) => {
@@ -34,6 +37,7 @@ const sendQuery = (query) => {
     console.log(query)
     pool.query(query, (error, results) => {
       if (error) {
+        console.error(error)
         reject(error)
       }
       resolve(results.rows);
@@ -42,7 +46,11 @@ const sendQuery = (query) => {
 }
 
 module.exports = {
-  getEmployees,
   sendQuery,
-  getRooms
+  getBookings,
+  getEmployees,
+  getParentHotel,
+  getHotel,
+  getRooms,
+  getCustomers
 }
